@@ -29,6 +29,7 @@ export interface RateLimiterOptions {
 	omitResponseHeaders?: boolean
 	errorMessage?: string
 	logger?: boolean
+	consumeKey?: string
 	customResponseSchema?: (rateLimiterResponse: RateLimiterRes) => {}
 }
 
