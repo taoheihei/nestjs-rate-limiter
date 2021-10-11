@@ -147,9 +147,11 @@ export class RateLimiterGuard implements CanActivate {
 	}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
+		const request = this.httpHandler(context).req
+		const response = this.httpHandler(context).res
 		let points: number = this.specificOptions?.points || this.options.points
 		let pointsConsumed: number = this.specificOptions?.pointsConsumed || this.options.pointsConsumed
-
+		let consumeKey = this.specificOptions? request[this.specificOptions.consumeKey] : request.ip?.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/)?.[0]
 		const reflectedOptions: RateLimiterOptions = this.reflector.get<RateLimiterOptions>('rateLimit', context.getHandler())
 
 		if (reflectedOptions) {
@@ -160,15 +162,14 @@ export class RateLimiterGuard implements CanActivate {
 			if (reflectedOptions.pointsConsumed) {
 				pointsConsumed = reflectedOptions.pointsConsumed
 			}
+			
+			if(reflectedOptions.consumeKey){
+				consumeKey = request[reflectedOptions.consumeKey]
+			}
 		}
 
-		const request = this.httpHandler(context).req
-		const response = this.httpHandler(context).res
-
 		const rateLimiter: RateLimiterAbstract = await this.getRateLimiter(reflectedOptions)
-		const key = this.specificOptions?.consumeKey || request.ip?.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/)?.[0]
-
-		await this.responseHandler(response, key, rateLimiter, points, pointsConsumed)
+		await this.responseHandler(response, consumeKey, rateLimiter, points, pointsConsumed)
 		return true
 	}
 
