@@ -16,7 +16,7 @@ describe('RateLimiterModule', () => {
 		expect(typeof registeredDynamicModule.module).toBeDefined()
 		expect(registeredDynamicModule.providers.length).toBe(1)
 		const rateLimitOptionsProvider: any = registeredDynamicModule.providers[0]
-		expect(rateLimitOptionsProvider.provide).toBe('RATE_LIMITER_OPTIONS')
+		expect(rateLimitOptionsProvider.provide).toBe('RATE_LIMITER_OPTIONS_IP')
 		expect(rateLimitOptionsProvider.useValue).toBeDefined()
 	})
 
@@ -29,7 +29,7 @@ describe('RateLimiterModule', () => {
 		expect(typeof registeredDynamicModule.module).toBeDefined()
 		expect(registeredDynamicModule.providers.length).toBe(1)
 		const rateLimitOptionsProvider: any = registeredDynamicModule.providers[0]
-		expect(rateLimitOptionsProvider.provide).toBe('RATE_LIMITER_OPTIONS')
+		expect(rateLimitOptionsProvider.provide).toBe('RATE_LIMITER_OPTIONS_IP')
 		expect(rateLimitOptionsProvider.useValue).toBeDefined()
 
 		const options: RateLimiterOptions = rateLimitOptionsProvider.useValue
@@ -46,7 +46,7 @@ describe('RateLimiterModule', () => {
 		expect(typeof registeredDynamicModule.module).toBeDefined()
 		expect(registeredDynamicModule.providers.length).toBe(2)
 		const rateLimitOptionsProvider: any = registeredDynamicModule.providers[0]
-		expect(rateLimitOptionsProvider.provide).toBe('RATE_LIMITER_OPTIONS')
+		expect(rateLimitOptionsProvider.provide).toBe('RATE_LIMITER_OPTIONS_IP')
 		expect(rateLimitOptionsProvider.useFactory).toBeDefined()
 		expect(rateLimitOptionsProvider.inject).toBeDefined()
 	})

@@ -189,7 +189,7 @@ export class RateLimiterIPGuard implements CanActivate {
 
 	private async setResponseHeaders(response: any, points: number, rateLimiterResponse: RateLimiterRes) {
 		response.header('Retry-After', Math.ceil(rateLimiterResponse.msBeforeNext / 1000))
-		response.header('X-RateLimit-Limit', points)
+		response.header('X-RateLimit-Limit-IP', points)
 		response.header('X-Retry-Remaining', rateLimiterResponse.remainingPoints)
 		response.header('X-Retry-Reset', new Date(Date.now() + rateLimiterResponse.msBeforeNext).toUTCString())
 	}
@@ -204,6 +204,7 @@ export class RateLimiterIPGuard implements CanActivate {
 			}
 		} catch (rateLimiterResponse) {
 			response.header('Retry-After', Math.ceil(rateLimiterResponse.msBeforeNext / 1000))
+			response.header('X-RateLimit-Limit-IP', points)
 			if (typeof this.specificOptions?.customResponseSchema === 'function' || typeof this.options.customResponseSchema === 'function') {
 				const errorBody = this.specificOptions?.customResponseSchema || this.options.customResponseSchema
 				throw new HttpException(errorBody(rateLimiterResponse), HttpStatus.TOO_MANY_REQUESTS)
