@@ -15,14 +15,15 @@ import {
 } from 'rate-limiter-flexible'
 import { RateLimiterOptions } from './rate-limiter.interface'
 import { defaultRateLimiterOptions } from './default-options'
+import * as _ from 'lodash'
 
 @Injectable()
-export class RateLimiterGuard implements CanActivate {
+export class RateLimiterIPGuard implements CanActivate {
 	private rateLimiters: Map<string, RateLimiterAbstract> = new Map()
 	private specificOptions: RateLimiterOptions
 	private queueLimiter: RateLimiterQueue
 
-	constructor(@Inject('RATE_LIMITER_OPTIONS') private options: RateLimiterOptions, @Inject('Reflector') private readonly reflector: Reflector) {}
+	constructor(@Inject('RATE_LIMITER_OPTIONS_IP') private options: RateLimiterOptions, @Inject('Reflector') private readonly reflector: Reflector) {}
 
 	async getRateLimiter(options?: RateLimiterOptions): Promise<RateLimiterAbstract> {
 		this.options = { ...defaultRateLimiterOptions, ...this.options }
@@ -151,9 +152,8 @@ export class RateLimiterGuard implements CanActivate {
 		const response = this.httpHandler(context).res
 		let points: number = this.specificOptions?.points || this.options.points
 		let pointsConsumed: number = this.specificOptions?.pointsConsumed || this.options.pointsConsumed
-		let consumeKey = this.specificOptions? request[this.specificOptions.consumeKey] : request.ip?.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/)?.[0]
+		let consumeKey = request.ip?.match(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/)?.[0]
 		const reflectedOptions: RateLimiterOptions = this.reflector.get<RateLimiterOptions>('rateLimit', context.getHandler())
-
 		if (reflectedOptions) {
 			if (reflectedOptions.points) {
 				points = reflectedOptions.points
@@ -162,12 +162,7 @@ export class RateLimiterGuard implements CanActivate {
 			if (reflectedOptions.pointsConsumed) {
 				pointsConsumed = reflectedOptions.pointsConsumed
 			}
-			
-			if(reflectedOptions.consumeKey){
-				consumeKey = request[reflectedOptions.consumeKey]
-			}
 		}
-
 		const rateLimiter: RateLimiterAbstract = await this.getRateLimiter(reflectedOptions)
 		await this.responseHandler(response, consumeKey, rateLimiter, points, pointsConsumed)
 		return true

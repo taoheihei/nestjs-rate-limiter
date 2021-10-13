@@ -1,16 +1,16 @@
 import { DynamicModule, Provider } from '@nestjs/common'
-import { RateLimiterModule } from './rate-limiter.module'
+import { RateLimiterUIDModule } from './rate-limiter-uid.module'
 import { RateLimiterOptions, RateLimiterModuleAsyncOptions } from './rate-limiter.interface'
 
 describe('RateLimiterModule', () => {
 	it('should validate that RateLimiterModule exists', async () => {
-		expect(RateLimiterModule).toBeDefined()
+		expect(RateLimiterUIDModule).toBeDefined()
 	})
 
 	it('should register RateLimiterModule with empty options', async () => {
 		const rateLimiterOptions: RateLimiterOptions = {}
 
-		const registeredDynamicModule: DynamicModule = RateLimiterModule.register(rateLimiterOptions)
+		const registeredDynamicModule: DynamicModule = RateLimiterUIDModule.register(rateLimiterOptions)
 
 		expect(registeredDynamicModule).toBeDefined()
 		expect(typeof registeredDynamicModule.module).toBeDefined()
@@ -23,7 +23,7 @@ describe('RateLimiterModule', () => {
 	it('should register RateLimiterModule with default options', async () => {
 		const rateLimiterOptions: RateLimiterOptions = {}
 
-		const registeredDynamicModule: DynamicModule = RateLimiterModule.register()
+		const registeredDynamicModule: DynamicModule = RateLimiterUIDModule.register()
 
 		expect(registeredDynamicModule).toBeDefined()
 		expect(typeof registeredDynamicModule.module).toBeDefined()
@@ -40,7 +40,7 @@ describe('RateLimiterModule', () => {
 	it('should register async RateLimiterModule with async options', async () => {
 		const rateLimiterOptions: RateLimiterModuleAsyncOptions = {}
 
-		const registeredDynamicModule: DynamicModule = RateLimiterModule.registerAsync(rateLimiterOptions)
+		const registeredDynamicModule: DynamicModule = RateLimiterUIDModule.registerAsync(rateLimiterOptions)
 
 		expect(registeredDynamicModule).toBeDefined()
 		expect(typeof registeredDynamicModule.module).toBeDefined()

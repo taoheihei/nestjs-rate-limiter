@@ -3,20 +3,20 @@ import { defaultRateLimiterOptions } from './default-options'
 import { RateLimiterOptions, RateLimiterModuleAsyncOptions, RateLimiterOptionsFactory } from './rate-limiter.interface'
 
 @Module({
-	exports: ['RATE_LIMITER_OPTIONS'],
-	providers: [{ provide: 'RATE_LIMITER_OPTIONS', useValue: defaultRateLimiterOptions }]
+	exports: ['RATE_LIMITER_OPTIONS_UID'],
+	providers: [{ provide: 'RATE_LIMITER_OPTIONS_UID', useValue: defaultRateLimiterOptions }]
 })
-export class RateLimiterModule {
+export class RateLimiterUIDModule {
 	static register(options: RateLimiterOptions = defaultRateLimiterOptions): DynamicModule {
 		return {
-			module: RateLimiterModule,
-			providers: [{ provide: 'RATE_LIMITER_OPTIONS', useValue: options }]
+			module: RateLimiterUIDModule,
+			providers: [{ provide: 'RATE_LIMITER_OPTIONS_UID', useValue: options }]
 		}
 	}
 
 	static registerAsync(options: RateLimiterModuleAsyncOptions): DynamicModule {
 		return {
-			module: RateLimiterModule,
+			module: RateLimiterUIDModule,
 			imports: options.imports,
 			providers: [...this.createAsyncProviders(options), ...(options.extraProviders || [])]
 		}

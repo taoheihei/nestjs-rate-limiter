@@ -26,7 +26,6 @@ export const defaultRateLimiterOptions: RateLimiterOptions = {
 	maxQueueSize: 100,
 	omitResponseHeaders: false,
 	errorMessage: 'Rate limit exceeded',
-	consumeKey: undefined,
 	customResponseSchema: undefined,
 	logger: true
 }
