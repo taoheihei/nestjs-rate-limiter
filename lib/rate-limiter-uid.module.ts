@@ -38,13 +38,13 @@ export class RateLimiterUIDModule {
 	private static createAsyncOptionsProvider(options: RateLimiterModuleAsyncOptions): Provider {
 		if (options.useFactory) {
 			return {
-				provide: 'RATE_LIMITER_OPTIONS',
+				provide: 'RATE_LIMITER_OPTIONS_UID',
 				useFactory: options.useFactory,
 				inject: options.inject || []
 			}
 		}
 		return {
-			provide: 'RATE_LIMITER_OPTIONS',
+			provide: 'RATE_LIMITER_OPTIONS_UID',
 			useFactory: async (optionsFactory: RateLimiterOptionsFactory) => optionsFactory.createRateLimiterOptions(),
 			inject: [options.useExisting || options.useClass]
 		}
